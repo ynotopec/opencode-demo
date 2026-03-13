@@ -1,33 +1,41 @@
 # opencode-demo
 
-Simple opencode setup scripts and configuration.
+Minimal scripts to mount a remote workspace, run `opencode web`, and expose it locally.
 
-## Usage
+## Quick start
 
-Run start script:
+```bash
+cp .env.example .env
+source .env
+make up
+```
+
+Open: <http://localhost:8080>
+
+## Commands
+
+Use either `make` (recommended) or scripts directly:
+
+- `make up` / `./opencode.sh up` – mount + start remote web + open tunnel
+- `make status` / `./opencode.sh status` – show mount/tunnel/remote status
+- `make down` / `./opencode.sh down` – stop tunnel + unmount + stop remote web
+- `make check` – syntax-check shell scripts
+
+Compatibility wrappers are still available:
 
 ```bash
 ./start-opencode.sh
-```
-
-Stop opencode:
-
-```bash
 ./stop-opencode.sh
 ```
 
 ## Configuration
 
-Create environment file from example:
+Environment variables (optional unless noted):
 
-```bash
-cp .env.example .env
-# Edit .env and set OPENCODE_SERVER_PASSWORD
-```
-
-Then source it (or pass variables directly):
-
-```bash
-source .env
-./start-opencode.sh
-```
+- `OPENCODE_SERVER_PASSWORD` (**recommended**) password used when starting remote `opencode web`
+- `OPENCODE_REMOTE_USER` (default: `openclaw`)
+- `OPENCODE_REMOTE_HOST` (default: `openclaw`)
+- `OPENCODE_REMOTE_DIR` (default: `work`)
+- `OPENCODE_LOCAL_MOUNT` (default: `$HOME/work`)
+- `OPENCODE_LOCAL_PORT` (default: `8080`)
+- `OPENCODE_REMOTE_PORT` (default: `8080`)
