@@ -15,6 +15,7 @@ LOCAL_PORT="${OPENCODE_LOCAL_PORT:-8080}"
 REMOTE_PORT="${OPENCODE_REMOTE_PORT:-8080}"
 
 OPENCODE_PASSWORD="${OPENCODE_SERVER_PASSWORD:-}"
+OPENCODE_WEB_EXTRA_ARGS="${OPENCODE_WEB_EXTRA_ARGS:-}"
 
 usage() {
   cat <<USAGE
@@ -94,6 +95,12 @@ up() {
 
   echo "[INFO] ensuring remote opencode web is running"
   ssh -n -o BatchMode=yes "$REMOTE" "bash -lc '
+    # Load common shell startup files so the browser session has a command
+    # environment closer to what users see in their interactive terminals.
+    [ -f \"\$HOME/.profile\" ] && . \"\$HOME/.profile\"
+    [ -f \"\$HOME/.bash_profile\" ] && . \"\$HOME/.bash_profile\"
+    [ -f \"\$HOME/.bashrc\" ] && . \"\$HOME/.bashrc\"
+
     export PATH=\"\$HOME/.local/bin:\$PATH\"
 
     if ss -ltn | grep -q \":${REMOTE_PORT} \"; then
@@ -102,6 +109,7 @@ up() {
       echo \"[INFO] starting opencode on port ${REMOTE_PORT}\"
       export OPENCODE_SERVER_PASSWORD=\"${OPENCODE_PASSWORD}\"
       nohup opencode web --port ${REMOTE_PORT} --hostname 127.0.0.1 \
+        ${OPENCODE_WEB_EXTRA_ARGS} \
         >/tmp/opencode-web.log 2>&1 < /dev/null &
       sleep 3
       ss -ltn | grep -q \":${REMOTE_PORT} \" \
