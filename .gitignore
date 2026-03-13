@@ -38,4 +38,12 @@ test_logs/
 *.sqlite3
 *.db
 *.sqlite
-.DS_Store
+.env
+.env.local
+.env.development
+.env.production
+credentials.json
+*.pem
+*.key
+*.crt
+*.p12

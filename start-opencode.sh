@@ -14,6 +14,11 @@ REMOTE_PORT="8080"
 
 OPENCODE_PASSWORD="${OPENCODE_SERVER_PASSWORD:-change-me-now}"
 
+if [[ "${OPENCODE_SERVER_PASSWORD}" == "change-me-now" ]]; then
+  echo "[WARN] OPENCODE_SERVER_PASSWORD is still using default value"
+  echo "[WARN] Set OPENCODE_SERVER_PASSWORD environment variable"
+fi
+
 mkdir -p "$LOCAL_MOUNT"
 
 echo "[INFO] ensuring remote directory exists: $REMOTE_PATH"
