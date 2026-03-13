@@ -32,7 +32,8 @@ Compatibility wrappers are still available:
 
 Environment variables (optional unless noted):
 
-- `OPENCODE_SERVER_PASSWORD` (**recommended**) password used when starting remote `opencode web`
+- `OPENCODE_SERVER_PASSWORD` (**optional**) password used when starting remote `opencode web`
+  - If not set, `make up` / `./opencode.sh up` will securely prompt for it at startup in interactive shells
 - `OPENCODE_REMOTE_USER` (default: `openclaw`)
 - `OPENCODE_REMOTE_HOST` (default: `openclaw`)
 - `OPENCODE_REMOTE_DIR` (default: `work`)

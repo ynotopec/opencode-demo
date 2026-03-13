@@ -14,7 +14,7 @@ REMOTE_PATH="/home/${REMOTE_USER}/${REMOTE_DIR}"
 LOCAL_PORT="${OPENCODE_LOCAL_PORT:-8080}"
 REMOTE_PORT="${OPENCODE_REMOTE_PORT:-8080}"
 
-OPENCODE_PASSWORD="${OPENCODE_SERVER_PASSWORD:-change-me-now}"
+OPENCODE_PASSWORD="${OPENCODE_SERVER_PASSWORD:-}"
 
 usage() {
   cat <<USAGE
@@ -46,15 +46,32 @@ is_remote_running() {
   ssh -n -o BatchMode=yes "$REMOTE" "ss -ltn | grep -q ':${REMOTE_PORT} '" </dev/null
 }
 
+ensure_password() {
+  if [[ -n "$OPENCODE_PASSWORD" ]]; then
+    return
+  fi
+
+  if [[ ! -t 0 ]]; then
+    echo "[ERR] OPENCODE_SERVER_PASSWORD is not set and no interactive terminal is available"
+    echo "[ERR] Set OPENCODE_SERVER_PASSWORD before running 'up' in non-interactive mode"
+    exit 1
+  fi
+
+  read -r -s -p "Enter OPENCODE server password: " OPENCODE_PASSWORD
+  echo
+
+  if [[ -z "$OPENCODE_PASSWORD" ]]; then
+    echo "[ERR] Password cannot be empty"
+    exit 1
+  fi
+}
+
 up() {
   require_command ssh
   require_command sshfs
   require_command mountpoint
 
-  if [[ "$OPENCODE_PASSWORD" == "change-me-now" ]]; then
-    echo "[WARN] OPENCODE_SERVER_PASSWORD is still using default value"
-    echo "[WARN] Set OPENCODE_SERVER_PASSWORD environment variable"
-  fi
+  ensure_password
 
   mkdir -p "$LOCAL_MOUNT"
 
