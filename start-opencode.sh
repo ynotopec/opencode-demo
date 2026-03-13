@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -u
+set -euo pipefail
 
 REMOTE_USER="openclaw"
 REMOTE_HOST="openclaw"
@@ -14,7 +14,7 @@ REMOTE_PORT="8080"
 
 OPENCODE_PASSWORD="${OPENCODE_SERVER_PASSWORD:-change-me-now}"
 
-if [[ "${OPENCODE_SERVER_PASSWORD}" == "change-me-now" ]]; then
+if [[ "$OPENCODE_PASSWORD" == "change-me-now" ]]; then
   echo "[WARN] OPENCODE_SERVER_PASSWORD is still using default value"
   echo "[WARN] Set OPENCODE_SERVER_PASSWORD environment variable"
 fi
