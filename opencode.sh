@@ -171,9 +171,9 @@ down() {
 
   echo "[INFO] stopping remote opencode"
   ssh -n "${SSH_OPTS[@]}" "$REMOTE" "bash -lc '
-    pkill -f "opencode web --port ${REMOTE_PORT}" 2>/dev/null || true
+    pkill -f opencode[[:space:]]web[[:space:]]--port[[:space:]]${REMOTE_PORT} 2>/dev/null || true
     sleep 1
-    pgrep -af "opencode web --port ${REMOTE_PORT}" >/dev/null \
+    pgrep -af opencode[[:space:]]web[[:space:]]--port[[:space:]]${REMOTE_PORT} >/dev/null \
       && echo "[WARN] remote opencode may still be running" \
       || echo "[OK] remote opencode stopped"
   '" </dev/null
