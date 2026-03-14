@@ -6,7 +6,6 @@ Minimal scripts to mount a remote workspace, run `opencode web`, and expose it l
 
 ```bash
 cp .env.example .env
-source .env
 make up
 ```
 
@@ -31,6 +30,8 @@ Compatibility wrappers are still available:
 ## Configuration
 
 Environment variables (optional unless noted):
+
+`opencode.sh` automatically loads `.env` from the repository root (with export), so values in `.env` are used by both `make` targets and direct script runs.
 
 - `OPENCODE_SERVER_PASSWORD` (**optional**) password used when starting remote `opencode web`
   - If not set, `make up` / `./opencode.sh up` will securely prompt for it at startup in interactive shells
